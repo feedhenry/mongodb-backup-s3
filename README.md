@@ -1,2 +1,2 @@
 # mongodb-backup-s3
-MongoDB Docker image files for archiving backups to AWS S3
+The purpose of this repository is to provide a MongoDB Docker image for archiving backups to AWS S3.
