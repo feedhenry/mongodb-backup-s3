@@ -1,0 +1,61 @@
+---
+apiVersion: v1
+kind: Template
+metadata:
+  name: mongodb-backup-s3-cronjob-template
+  annotations:
+    description: 'Cron job for backing up MongoDB data to Amazon S3'
+objects:
+  - apiVersion: batch/v2alpha1
+    kind: CronJob
+    metadata:
+      name: mongodb-backup-s3-cronjob
+    spec:
+      schedule: ${CRON_SCHEDULE}
+      jobTemplate:
+        spec:
+          template:
+            metadata:
+              name: mongodb-backup-s3-cronjob
+            spec:
+              containers:
+                - name: mongodb-backup-s3-cronjob
+                  image: 'docker.io/rhmap/mongodb-backup-s3:latest'
+                  command:
+                    - 'bash'
+                    - '-c'
+                    - '/opt/rh/backup.sh ${MONGODB_HOST} ${MONGODB_PORT} ${MONGODB_USER} ${MONGODB_PASSWORD} ${MONGODB_AUTHENTICATION_DATABASE} ${AWS_S3_BUCKET_NAME}'
+                  env:
+                    - name: AWS_ACCESS_KEY_ID
+                      value: ${AWS_ACCESS_KEY_ID}
+                    - name: AWS_SECRET_ACCESS_KEY
+                      value: ${AWS_SECRET_ACCESS_KEY}
+              restartPolicy: Never
+parameters:
+  - name: AWS_ACCESS_KEY_ID
+    description: 'AWS Access Key ID'
+    required: true
+  - name: AWS_SECRET_ACCESS_KEY
+    description: 'AWS Secret Access Key'
+    required: true
+  - name: AWS_S3_BUCKET_NAME
+    description: 'Name of an existing Amazon S3 bucket where backups are to be pushed'
+    required: true
+  - name: CRON_SCHEDULE
+    description: 'Job schedule in Cron Format [Default is everyday at 2am]'
+    value: '0 2 * * *'
+  - name: MONGODB_HOST
+    description: 'MongoDB host to target'
+    required: true
+  - name: MONGODB_PORT
+    description: 'MongoDB port number'
+    value: '27017'
+  - name: MONGODB_USER
+    description: 'MongoDB user to perform the backup'
+    required: true
+  - name: MONGODB_PASSWORD
+    description: 'MongoDB user password'
+    required: true
+  - name: MONGODB_AUTHENTICATION_DATABASE
+    description: 'MongoDB database to authenticate against'
+    value: 'admin'
