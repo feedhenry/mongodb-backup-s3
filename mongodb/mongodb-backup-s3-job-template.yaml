@@ -19,11 +19,11 @@ objects:
         spec:
           containers:
             - name: mongodb-backup-s3
-              image: 'docker.io/rhmap/mongodb-backup-s3:latest'
+              image: 'docker.io/rhmap/backups:latest'
               command:
                 - 'bash'
                 - '-c'
-                - '/opt/rh/backup.sh ${MONGODB_HOST} ${MONGODB_PORT} ${MONGODB_USER} ${MONGODB_PASSWORD} ${MONGODB_AUTHENTICATION_DATABASE} ${AWS_S3_BUCKET_NAME}'
+                - '/opt/rh/scripts/mongodb/backup-s3.sh ${MONGODB_HOST} ${MONGODB_PORT} ${MONGODB_USER} ${MONGODB_PASSWORD} ${MONGODB_AUTHENTICATION_DATABASE} ${AWS_S3_BUCKET_NAME}'
               env:
                 - name: AWS_ACCESS_KEY_ID
                   value: ${AWS_ACCESS_KEY_ID}
