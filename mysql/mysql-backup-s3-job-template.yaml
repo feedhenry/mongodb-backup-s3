@@ -6,6 +6,13 @@ metadata:
   annotations:
     description: 'Job for backing up MySQL data to Amazon S3'
 objects:
+  -
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: mysql-backup-s3-secret
+    data:
+      gpg_public_key: ${GPG_PUBLIC_KEY}
   - apiVersion: batch/v1
     kind: Job
     metadata:
