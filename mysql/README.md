@@ -20,6 +20,9 @@ AWS_S3_BUCKET_NAME      Name of an existing Amazon S3 bucket where backups are t
 MYSQL_HOST              MySQL host to target
 MYSQL_USER              MySQL user to perform the backup
 MYSQL_PASSWORD          MySQL user password
+GPG_RECIPIENT                     GPG recpient name to be used to encrypt the database archive
+GPG_PUBLIC_KEY                    GPG public key content (base64 encoded)
+GPG_TRUST_MODEL                   GPG encryption trust model, defaults to "always"
 ```
 
 #### Running the Job
@@ -27,7 +30,7 @@ The job template can be run directly using the Openshift CLI or made available t
 
 ##### OC Command line tool
 ```
-$ oc new-app mysql-backup-s3-job-template.yaml -p AWS_ACCESS_KEY_ID=<aws_access_key_id> -p AWS_SECRET_ACCESS_KEY=<aws_secret_access_key> -p AWS_S3_BUCKET_NAME=<bucket_name> -p MYSQL_USER=<mysql-user> -p MYSQL_PASSWORD=<mysql_admin_password> -p MYSQL_HOST=<mysql-host>
+$ oc new-app mysql-backup-s3-job-template.yaml -p AWS_ACCESS_KEY_ID=<aws_access_key_id> -p AWS_SECRET_ACCESS_KEY=<aws_secret_access_key> -p AWS_S3_BUCKET_NAME=<bucket_name> -p MYSQL_USER=<mysql-user> -p MYSQL_PASSWORD=<mysql_admin_password> -p MYSQL_HOST=<mysql-host> -p GPG_RECIPIENT=admin@admin.com -p "GPG_PUBLIC_KEY=$(cat keys_public.gpg | base64)"
 ```
 
 ###### Validation
