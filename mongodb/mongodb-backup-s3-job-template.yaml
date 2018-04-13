@@ -10,10 +10,9 @@ objects:
     apiVersion: v1
     kind: Secret
     metadata:
-      name: rhmap-backup-secret
+      name: mongodb-backup-s3-secret
     data:
       gpg_public_key: ${GPG_PUBLIC_KEY}
-      gpg_secret_key: ${GPG_SECRET_KEY}
   - apiVersion: batch/v1
     kind: Job
     metadata:
@@ -27,13 +26,13 @@ objects:
         spec:
           containers:
             - name: mongodb-backup-s3
-              image: 'rhmap/backups:dev'
+              image: 'docker.io/rhmap/backups:latest'
               command:
                 - 'bash'
                 - '-c'
                 - '/opt/rh/scripts/mongodb/backup-s3.sh ${MONGODB_HOST} ${MONGODB_PORT} ${MONGODB_USER} ${MONGODB_PASSWORD} ${MONGODB_AUTHENTICATION_DATABASE} ${AWS_S3_BUCKET_NAME} ${GPG_RECIPIENT}'
               volumeMounts:
-                - name: rhmap-backup-secret-volume
+                - name: mongodb-backup-s3-secret-volume
                   mountPath: /opt/rh/secrets
                   readOnly: true
               env:
@@ -50,9 +49,9 @@ objects:
                 - name: GPG_TRUST_MODEL
                   value: ${GPG_TRUST_MODEL}
           volumes:
-            - name: rhmap-backup-secret-volume
+            - name: mongodb-backup-s3-secret-volume
               secret:
-                secretName: rhmap-backup-secret
+                secretName: mongodb-backup-s3-secret
           restartPolicy: Never
 parameters:
   - name: AWS_ACCESS_KEY_ID
@@ -84,9 +83,6 @@ parameters:
     required: true
   - name: GPG_PUBLIC_KEY
     description: 'GPG public key content (base64 encoded)'
-    required: true
-  - name: GPG_SECRET_KEY
-    description: 'GPG secret key content (base64 encoded)'
     required: true
   - name: GPG_TRUST_MODEL
     description: 'GPG encryption trust model, defaults to "always"'

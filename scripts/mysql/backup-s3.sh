@@ -6,17 +6,21 @@ HOST=$1
 USER=$2
 PASSWORD=$3
 S3_BUCKET_NAME=$4
+GPG_RECIPIENT=$5
 
 DATESTAMP=$(date '+%Y-%m-%d')
 
 # Retrieve a list of all databases
 DATABASES=$(mysql -h$HOST -u$USER  -p$PASSWORD -e 'SHOW DATABASES' | tail -n+2 | grep -v information_schema)
 
+# Imports the gpg public key
+gpg --import /opt/rh/secrets/gpg_public_key
+
 # For each database archive data and push directly to S3
 for DATABASE in $DATABASES; do
   TIMESTAMP=$(date '+%H:%M:%S')
   echo "==> Dumping database $DATABASE to S3 bucket s3://$S3_BUCKET_NAME/backups/mysql/$DATESTAMP/"
-  mysqldump -h$HOST -u$USER -p$PASSWORD -R $DATABASE | gzip | aws s3 cp - s3://$S3_BUCKET_NAME/backups/mysql/$DATESTAMP/$DATABASE-$TIMESTAMP.dump.gz
+  mysqldump -h$HOST -u$USER -p$PASSWORD -R $DATABASE | gzip | gpg --encrypt --recipient "$GPG_RECIPIENT" --trust-model $GPG_TRUST_MODEL | aws s3 cp - s3://$S3_BUCKET_NAME/backups/mysql/$DATESTAMP/$DATABASE-$TIMESTAMP.dump.gz
   STATUS=$?
   if [ $STATUS -eq 0 ]; then
     echo "==> Dump $DATABASE: COMPLETED"

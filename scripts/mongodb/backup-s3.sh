@@ -15,10 +15,8 @@ DATESTAMP=$(date '+%Y-%m-%d')
 # Retrieve a list of all databases
 DATABASES=$(mongo $HOST:$PORT/admin -u $USER -p $PASSWORD --eval  "printjson(db.adminCommand('listDatabases'))" | grep name | cut -d '"' -f4 | grep -v local)
 
-if [[ ! -z $GPG_RECIPIENT ]]; then
-  gpg --import /opt/rh/secrets/gpg_public_key
-  gpg --import /opt/rh/secrets/gpg_secret_key
-fi
+# Imports the gpg public key
+gpg --import /opt/rh/secrets/gpg_public_key
 
 # For each database archive data and push directly to S3
 for DATABASE in $DATABASES; do
