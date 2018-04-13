@@ -42,10 +42,6 @@ objects:
                   value: ${AWS_SECRET_ACCESS_KEY}
                 - name: GPG_RECIPIENT
                   value: ${GPG_RECIPIENT}
-                - name: GPG_PUBLIC_KEY
-                  value: ${GPG_PUBLIC_KEY}
-                - name: GPG_SECRET_KEY
-                  value: ${GPG_SECRET_KEY}
                 - name: GPG_TRUST_MODEL
                   value: ${GPG_TRUST_MODEL}
           volumes:
