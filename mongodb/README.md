@@ -22,6 +22,9 @@ MONGODB_PORT                      MongoDB port number                           
 MONGODB_USER                      MongoDB user to perform the backup
 MONGODB_PASSWORD                  MongoDB user password
 MONGODB_AUTHENTICATION_DATABASE   MongoDB database to authenticate against                                                  admin
+GPG_RECIPIENT                     GPG recpient name to be used to encrypt the database archive
+GPG_PUBLIC_KEY                    GPG public key content (base64 encoded)
+GPG_TRUST_MODEL                   GPG encryption trust model, defaults to "always"
 ```
 
 #### Running the Job
@@ -29,7 +32,7 @@ The job template can be run directly using the Openshift CLI or made available t
 
 ##### OC Command line tool
 ```
-$ oc new-app mongodb-backup-s3-job-template.yaml -p AWS_ACCESS_KEY_ID=<aws_access_key_id> -p AWS_SECRET_ACCESS_KEY=<aws_secret_access_key> -p AWS_S3_BUCKET_NAME=<bucket_name> -p MONGODB_USER=admin -p MONGODB_PASSWORD=<mongodb_admin_password> -p MONGODB_HOST=<mongodb-host> -p MONGODB_AUTHENTICATION_DATABASE=admin
+$ oc new-app mongodb-backup-s3-job-template.yaml -p AWS_ACCESS_KEY_ID=<aws_access_key_id> -p AWS_SECRET_ACCESS_KEY=<aws_secret_access_key> -p AWS_S3_BUCKET_NAME=<bucket_name> -p MONGODB_USER=admin -p MONGODB_PASSWORD=<mongodb_admin_password> -p MONGODB_HOST=<mongodb-host> -p MONGODB_AUTHENTICATION_DATABASE=admin -p GPG_RECIPIENT=admin@admin.com -p "GPG_PUBLIC_KEY=$(cat keys_public.gpg | base64)"
 ```
 
 ###### Validation
