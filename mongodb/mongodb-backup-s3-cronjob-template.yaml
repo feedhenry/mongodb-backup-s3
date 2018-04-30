@@ -13,6 +13,14 @@ objects:
       name: mongodb-backup-s3-secret
     data:
       gpg_public_key: ${GPG_PUBLIC_KEY}
+      gpg_private_key: ${GPG_PRIVATE_KEY}
+  -
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: mongodb-backup-s3-secret-password
+    data:
+      gpg_password: ${GPG_PASSWORD}
   - apiVersion: batch/v2alpha1
     kind: CronJob
     metadata:
@@ -44,6 +52,11 @@ objects:
                       value: ${GPG_RECIPIENT}
                     - name: GPG_TRUST_MODEL
                       value: ${GPG_TRUST_MODEL}
+                    - name: GPG_PASSWORD
+                      valueFrom:
+                        secretKeyRef:
+                          name: mongodb-backup-s3-secret-password
+                          key: gpg_password
               volumes:
                 - name: mongodb-backup-s3-secret-volume
                   secret:
@@ -83,6 +96,12 @@ parameters:
   - name: GPG_PUBLIC_KEY
     description: 'GPG public key content (base64 encoded)'
     required: true
+  - name: GPG_PRIVATE_KEY
+    description: 'GPG private key content (base64 encoded)'
+    required: true
   - name: GPG_TRUST_MODEL
     description: 'GPG encryption trust model, defaults to "always"'
     value: 'always'
+  - name: GPG_PASSWORD
+    description: 'GPG password to be used when signing the backup archive'
+    required: true

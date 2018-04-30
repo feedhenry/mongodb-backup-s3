@@ -14,15 +14,17 @@ The job template requires a number of parameters to be specified. These can be v
 ```
 $ oc process --parameters -f mysql-backup-s3-job-template.yaml
 NAME                    DESCRIPTION                                                           GENERATOR           VALUE
-AWS_ACCESS_KEY_ID       AWS Access Key ID
-AWS_SECRET_ACCESS_KEY   AWS Secret Access Key
-AWS_S3_BUCKET_NAME      Name of an existing Amazon S3 bucket where backups are to be pushed
-MYSQL_HOST              MySQL host to target
-MYSQL_USER              MySQL user to perform the backup
-MYSQL_PASSWORD          MySQL user password
-GPG_RECIPIENT                     GPG recpient name to be used to encrypt the database archive
-GPG_PUBLIC_KEY                    GPG public key content (base64 encoded)
-GPG_TRUST_MODEL                   GPG encryption trust model, defaults to "always"
+AWS_ACCESS_KEY_ID       AWS Access Key ID                                                                         
+AWS_SECRET_ACCESS_KEY   AWS Secret Access Key                                                                     
+AWS_S3_BUCKET_NAME      Name of an existing Amazon S3 bucket where backups are to be pushed                       
+MYSQL_HOST              MySQL host to target                                                                      
+MYSQL_USER              MySQL user to perform the backup                                                          
+MYSQL_PASSWORD          MySQL user password                                                                       
+GPG_RECIPIENT           GPG recpient name to be used to encrypt the database archive                              
+GPG_PUBLIC_KEY          GPG public key content (base64 encoded)                                                   
+GPG_PRIVATE_KEY         GPG private key content (base64 encoded)                                                  
+GPG_TRUST_MODEL         GPG encryption trust model, defaults to "always"                                          always
+GPG_PASSWORD            GPG password to be used when signing the backup archive                                   
 ```
 
 #### Running the Job
@@ -30,7 +32,7 @@ The job template can be run directly using the Openshift CLI or made available t
 
 ##### OC Command line tool
 ```
-$ oc new-app mysql-backup-s3-job-template.yaml -p AWS_ACCESS_KEY_ID=<aws_access_key_id> -p AWS_SECRET_ACCESS_KEY=<aws_secret_access_key> -p AWS_S3_BUCKET_NAME=<bucket_name> -p MYSQL_USER=<mysql-user> -p MYSQL_PASSWORD=<mysql_admin_password> -p MYSQL_HOST=<mysql-host> -p GPG_RECIPIENT=admin@admin.com -p "GPG_PUBLIC_KEY=$(cat keys_public.gpg | base64)"
+$ oc new-app mysql-backup-s3-job-template.yaml -p AWS_ACCESS_KEY_ID=<aws_access_key_id> -p AWS_SECRET_ACCESS_KEY=<aws_secret_access_key> -p AWS_S3_BUCKET_NAME=<bucket_name> -p MYSQL_USER=<mysql-user> -p MYSQL_PASSWORD=<mysql_admin_password> -p MYSQL_HOST=<mysql-host> -p GPG_RECIPIENT=admin@admin.com -p "GPG_PUBLIC_KEY=$(cat keys_public.gpg | base64)" -p "GPG_PRIVATE_KEY=$(cat keys_private.gpg | base64)" -p "GPG_PASSWORD=$(echo 'mypassword' | base64)"
 ```
 
 ###### Validation
@@ -77,13 +79,18 @@ The cronjob template requires a number of parameters to be specified. These can 
 ```
 $ oc process --parameters -f mysql-backup-s3-cronjob-template.yaml
 NAME                    DESCRIPTION                                                           GENERATOR           VALUE
-AWS_ACCESS_KEY_ID       AWS Access Key ID
-AWS_SECRET_ACCESS_KEY   AWS Secret Access Key
-AWS_S3_BUCKET_NAME      Name of an existing Amazon S3 bucket where backups are to be pushed
+AWS_ACCESS_KEY_ID       AWS Access Key ID                                                                         
+AWS_SECRET_ACCESS_KEY   AWS Secret Access Key                                                                     
+AWS_S3_BUCKET_NAME      Name of an existing Amazon S3 bucket where backups are to be pushed                       
 CRON_SCHEDULE           Job schedule in Cron Format [Default is everyday at 2am]                                  0 2 * * *
-MYSQL_HOST              MySQL host to target
-MYSQL_USER              MySQL user to perform the backup
-MYSQL_PASSWORD          MySQL user password
+MYSQL_HOST              MySQL host to target                                                                      
+MYSQL_USER              MySQL user to perform the backup                                                          
+MYSQL_PASSWORD          MySQL user password                                                                       
+GPG_RECIPIENT           GPG recpient name to be used to encrypt the database archive                              
+GPG_PUBLIC_KEY          GPG public key content (base64 encoded)                                                   
+GPG_PRIVATE_KEY         GPG private key content (base64 encoded)                                                  
+GPG_TRUST_MODEL         GPG encryption trust model, defaults to "always"                                          always
+GPG_PASSWORD            GPG password to be used when signing the backup archive                                   
 ```
 
 #### Running the CronJob
