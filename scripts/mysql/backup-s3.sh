@@ -22,6 +22,7 @@ for DATABASE in $DATABASES; do
   TIMESTAMP=$(date '+%H:%M:%S')
   echo "==> Dumping database $DATABASE to S3 bucket s3://$S3_BUCKET_NAME/backups/mysql/$DATESTAMP/"
   mysqldump -h$HOST -u$USER -p$PASSWORD -R $DATABASE | gzip > /tmp/$DATABASE-$TIMESTAMP.dump.gz
+  echo "==> Encrypting database archive \"$DATABASE\""
   gpg --no-tty --batch --yes --encrypt --recipient "$GPG_RECIPIENT" --trust-model $GPG_TRUST_MODEL /tmp/$DATABASE-$TIMESTAMP.dump.gz 
   echo "==> Dumping database $DATABASE to S3 bucket s3://$S3_BUCKET_NAME/backups/mysql/$DATESTAMP/"
   s3cmd put --progress /tmp/$DATABASE-$TIMESTAMP.dump.gz.gpg s3://$S3_BUCKET_NAME/backups/mysql/$DATESTAMP/$DATABASE-$TIMESTAMP.dump.gz.gpg

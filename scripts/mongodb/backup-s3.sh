@@ -24,7 +24,7 @@ for DATABASE in $DATABASES; do
   TIMESTAMP=$(date '+%H:%M:%S')
   echo "==> Archiving database \"$DATABASE\""
   mongodump -h $HOST:$PORT -u $USER -p $PASSWORD -d $DATABASE --archive --gzip --authenticationDatabase $AUTH_DB > /tmp/$DATABASE-$TIMESTAMP.dump.gz
-  echo "==> Enncrypting database archive \"$DATABASE\""
+  echo "==> Encrypting database archive \"$DATABASE\""
   #gpg --no-tty --batch --yes --local-user "$GPG_RECIPIENT" --encrypt --sign --passphrase "$(echo $GPG_PASSWORD | tr -d '\n')" --recipient "$GPG_RECIPIENT" --trust-model $GPG_TRUST_MODEL /tmp/$DATABASE-$TIMESTAMP.dump.gz
   gpg --no-tty --batch --yes --encrypt --recipient "$GPG_RECIPIENT" --trust-model $GPG_TRUST_MODEL /tmp/$DATABASE-$TIMESTAMP.dump.gz 
   echo "==> Dumping database $DATABASE to S3 bucket s3://$S3_BUCKET_NAME/backups/mongodb/$DATESTAMP/"
