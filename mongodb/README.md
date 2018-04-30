@@ -50,7 +50,7 @@ Dumping database mydatabase to S3 bucket my-s3-bucket...
 
 ###### Remove the Job
 ```
-$ oc delete job mongodb-backup-s3-job
+$ oc delete job mongodb-backup-s3
 ```
 
 ##### Service Catalog
