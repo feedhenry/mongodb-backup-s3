@@ -17,7 +17,6 @@ DATABASES=$(mongo $HOST:$PORT/admin -u $USER -p $PASSWORD --eval  "printjson(db.
 
 # Imports gpg keys
 gpg --import /opt/rh/secrets/gpg_public_key
-gpg --import /opt/rh/secrets/gpg_private_key
 gpg --list-keys
 
 # For each database archive data and push directly to S3
@@ -26,7 +25,8 @@ for DATABASE in $DATABASES; do
   echo "==> Archiving database \"$DATABASE\""
   mongodump -h $HOST:$PORT -u $USER -p $PASSWORD -d $DATABASE --archive --gzip --authenticationDatabase $AUTH_DB > /tmp/$DATABASE-$TIMESTAMP.dump.gz
   echo "==> Enncrypting database archive \"$DATABASE\""
-  gpg --no-tty --batch --yes --local-user "$GPG_RECIPIENT" --encrypt --sign --passphrase "$(echo $GPG_PASSWORD | tr -d '\n')" --recipient "$GPG_RECIPIENT" --trust-model $GPG_TRUST_MODEL /tmp/$DATABASE-$TIMESTAMP.dump.gz 
+  #gpg --no-tty --batch --yes --local-user "$GPG_RECIPIENT" --encrypt --sign --passphrase "$(echo $GPG_PASSWORD | tr -d '\n')" --recipient "$GPG_RECIPIENT" --trust-model $GPG_TRUST_MODEL /tmp/$DATABASE-$TIMESTAMP.dump.gz
+  gpg --no-tty --batch --yes --encrypt --recipient "$GPG_RECIPIENT" --trust-model $GPG_TRUST_MODEL /tmp/$DATABASE-$TIMESTAMP.dump.gz 
   echo "==> Dumping database $DATABASE to S3 bucket s3://$S3_BUCKET_NAME/backups/mongodb/$DATESTAMP/"
   s3cmd put --progress /tmp/$DATABASE-$TIMESTAMP.dump.gz.gpg s3://$S3_BUCKET_NAME/backups/mongodb/$DATESTAMP/$DATABASE-$TIMESTAMP.dump.gz.gpg
   STATUS=$?
