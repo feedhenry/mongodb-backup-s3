@@ -16,16 +16,16 @@ objects:
   - apiVersion: batch/v1
     kind: Job
     metadata:
-      name: mongodb-backup-s3
+      name: mongodb-backup-s3-job
     spec:
       parallelism: 1
       completions: 1
       template:
         metadata:
-          name: mongodb-backup-s3
+          name: mongodb-backup-s3-job
         spec:
           containers:
-            - name: mongodb-backup-s3
+            - name: mongodb-backup-s3-job
               image: 'docker.io/rhmap/backups:latest'
               command:
                 - 'bash'

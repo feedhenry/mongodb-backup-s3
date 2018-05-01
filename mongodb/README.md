@@ -53,6 +53,12 @@ Dumping database mydatabase to S3 bucket my-s3-bucket...
 $ oc delete job mongodb-backup-s3-job
 ```
 
+###### Remove the Secret
+There is a secret bound to a job when it is initiated. Therefore, when the job to removed, the secret must also be removed to maintain consistency.
+```
+oc delete secret mongodb-backup-s3-secret
+```
+
 ##### Service Catalog
 ###### Create Template and make available through the Service Catalog
 Specify the project where you want the job to run from:
