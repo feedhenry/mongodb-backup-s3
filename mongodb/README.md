@@ -14,17 +14,17 @@ The job template requires a number of parameters to be specified. These can be v
 ```
 $ oc process --parameters -f mongodb-backup-s3-job-template.yaml
 NAME                              DESCRIPTION                                                           GENERATOR           VALUE
-AWS_ACCESS_KEY_ID                 AWS Access Key ID
-AWS_SECRET_ACCESS_KEY             AWS Secret Access Key
-AWS_S3_BUCKET_NAME                Name of an existing Amazon S3 bucket where backups are to be pushed
-MONGODB_HOST                      MongoDB host to target
+AWS_ACCESS_KEY_ID                 AWS Access Key ID                                                                         
+AWS_SECRET_ACCESS_KEY             AWS Secret Access Key                                                                     
+AWS_S3_BUCKET_NAME                Name of an existing Amazon S3 bucket where backups are to be pushed                       
+MONGODB_HOST                      MongoDB host to target                                                                    
 MONGODB_PORT                      MongoDB port number                                                                       27017
-MONGODB_USER                      MongoDB user to perform the backup
-MONGODB_PASSWORD                  MongoDB user password
+MONGODB_USER                      MongoDB user to perform the backup                                                        
+MONGODB_PASSWORD                  MongoDB user password                                                                     
 MONGODB_AUTHENTICATION_DATABASE   MongoDB database to authenticate against                                                  admin
-GPG_RECIPIENT                     GPG recpient name to be used to encrypt the database archive
-GPG_PUBLIC_KEY                    GPG public key content (base64 encoded)
-GPG_TRUST_MODEL                   GPG encryption trust model, defaults to "always"
+GPG_RECIPIENT                     GPG recpient name to be used to encrypt the database archive                              
+GPG_PUBLIC_KEY                    GPG public key content (base64 encoded)                                                   
+GPG_TRUST_MODEL                   GPG encryption trust model, defaults to "always"                                          always
 ```
 
 #### Running the Job
@@ -87,15 +87,18 @@ The cronjob template requires a number of parameters to be specified. These can 
 ```
 $ oc process --parameters -f mongodb-backup-s3-cronjob-template.yaml
 NAME                              DESCRIPTION                                                           GENERATOR           VALUE
-AWS_ACCESS_KEY_ID                 AWS Access Key ID
-AWS_SECRET_ACCESS_KEY             AWS Secret Access Key
-AWS_S3_BUCKET_NAME                Name of an existing Amazon S3 bucket where backups are to be pushed
+AWS_ACCESS_KEY_ID                 AWS Access Key ID                                                                         
+AWS_SECRET_ACCESS_KEY             AWS Secret Access Key                                                                     
+AWS_S3_BUCKET_NAME                Name of an existing Amazon S3 bucket where backups are to be pushed                       
 CRON_SCHEDULE                     Job schedule in Cron Format [Default is everyday at 2am]                                  0 2 * * *
-MONGODB_HOST                      MongoDB host to target
+MONGODB_HOST                      MongoDB host to target                                                                    
 MONGODB_PORT                      MongoDB port number                                                                       27017
-MONGODB_USER                      MongoDB user to perform the backup
-MONGODB_PASSWORD                  MongoDB user password
+MONGODB_USER                      MongoDB user to perform the backup                                                        
+MONGODB_PASSWORD                  MongoDB user password                                                                     
 MONGODB_AUTHENTICATION_DATABASE   MongoDB database to authenticate against                                                  admin
+GPG_RECIPIENT                     GPG recpient name to be used to encrypt the database archive                              
+GPG_PUBLIC_KEY                    GPG public key content (base64 encoded)                                                   
+GPG_TRUST_MODEL                   GPG encryption trust model, defaults to "always"                                          always
 ```
 
 #### Running the CronJob
@@ -103,7 +106,7 @@ The cronjob template can be run directly using the Openshift CLI or made availab
 
 ##### OC Command line tool
 ```
-$ oc new-app mongodb-backup-s3-cronjob-template.yaml -p AWS_ACCESS_KEY_ID=<aws_access_key_id> -p AWS_SECRET_ACCESS_KEY=<aws_secret_access_key> -p AWS_S3_BUCKET_NAME=<bucket_name> -p MONGODB_USER=admin -p MONGODB_PASSWORD=<mongodb_admin_password> -p MONGODB_HOST=mongodb-1 -p MONGODB_AUTHENTICATION_DATABASE=admin CRON_SCHEDULE='0 * * * *'
+$ oc new-app mongodb-backup-s3-cronjob-template.yaml -p AWS_ACCESS_KEY_ID=<aws_access_key_id> -p AWS_SECRET_ACCESS_KEY=<aws_secret_access_key> -p AWS_S3_BUCKET_NAME=<bucket_name> -p MONGODB_USER=admin -p MONGODB_PASSWORD=<mongodb_admin_password> -p MONGODB_HOST=mongodb-1 -p MONGODB_AUTHENTICATION_DATABASE=admin CRON_SCHEDULE='0 * * * *' -p GPG_RECIPIENT=admin@admin.com -p "GPG_PUBLIC_KEY=$(cat keys_public.gpg | base64)"
 ```
 
 ###### Validation

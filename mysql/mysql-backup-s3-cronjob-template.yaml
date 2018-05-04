@@ -47,9 +47,9 @@ objects:
                       value: ${GPG_TRUST_MODEL}
               volumes:
                 - name: mysql-backup-s3-secret-volume
-                secret:
-                  secretName: mysql-backup-s3-secret
-              restartPolicy: Never
+                  secret:
+                    secretName: mysql-backup-s3-secret
+                  restartPolicy: Never
 parameters:
   - name: AWS_ACCESS_KEY_ID
     description: 'AWS Access Key ID'
