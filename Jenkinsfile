@@ -9,7 +9,7 @@ stage('Trust') {
 
 fhBuildNode(['label': 'openshift']) {
 
-    final String COMPONENT = "rhmap-backups"
+    final String COMPONENT = "backups"
     final String VERSION = "1.0.0"
     final String BUILD = env.BUILD_NUMBER
     final String DOCKER_HUB_ORG = "rhmap"
