@@ -28,6 +28,7 @@ objects:
               containers:
                 - name: mongodb-backup-s3-cronjob
                   image: 'docker.io/rhmap/backups:latest'
+                  imagePullPolicy: Always
                   command:
                     - 'bash'
                     - '-c'
