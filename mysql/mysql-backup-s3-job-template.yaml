@@ -27,6 +27,7 @@ objects:
           containers:
             - name: mysql-backup-s3
               image: 'docker.io/rhmap/backups:latest'
+              imagePullPolicy: Always
               command:
                 - 'bash'
                 - '-c'
