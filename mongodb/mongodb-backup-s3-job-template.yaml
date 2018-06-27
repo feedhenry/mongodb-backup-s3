@@ -26,7 +26,7 @@ objects:
         spec:
           containers:
             - name: mongodb-backup-s3-job
-              image: 'docker.io/rhmap/backups:latest'
+              image: 'docker.io/rhmap/backups:1.0.0-38f3766'
               imagePullPolicy: Always
               command:
                 - 'bash'
