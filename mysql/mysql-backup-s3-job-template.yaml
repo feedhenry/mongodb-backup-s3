@@ -26,7 +26,7 @@ objects:
         spec:
           containers:
             - name: mysql-backup-s3
-              image: 'docker.io/rhmap/backups:latest'
+              image: "${BACKUP_IMAGE}:${BACKUP_IMAGE_TAG}"
               imagePullPolicy: Always
               command:
                 - 'bash'
@@ -60,6 +60,12 @@ parameters:
   - name: AWS_S3_BUCKET_NAME
     description: 'Name of an existing Amazon S3 bucket where backups are to be pushed'
     required: true
+  - name: BACKUP_IMAGE
+    description: 'Backup docker image URL'
+    value: 'docker.io/rhmap/backups'
+  - name: BACKUP_IMAGE_TAG
+    description: 'Backup docker image tag'
+    value: 'latest'
   - name: MYSQL_HOST
     description: 'MySQL host to target'
     required: true

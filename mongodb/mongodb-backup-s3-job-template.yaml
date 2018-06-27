@@ -26,7 +26,7 @@ objects:
         spec:
           containers:
             - name: mongodb-backup-s3-job
-              image: 'docker.io/rhmap/backups:1.0.0-38f3766'
+              image: "${BACKUP_IMAGE}:${BACKUP_IMAGE_TAG}"
               imagePullPolicy: Always
               command:
                 - 'bash'
@@ -60,6 +60,12 @@ parameters:
   - name: AWS_S3_BUCKET_NAME
     description: 'Name of an existing Amazon S3 bucket where backups are to be pushed'
     required: true
+  - name: BACKUP_IMAGE
+    description: 'Backup docker image URL'
+    value: 'docker.io/rhmap/backups'
+  - name: BACKUP_IMAGE_TAG
+    description: 'Backup docker image tag'
+    value: 'latest'
   - name: MONGODB_HOST
     description: 'MongoDB host to target'
     required: true
