@@ -14,16 +14,18 @@ The job template requires a number of parameters to be specified. These can be v
 ```
 $ oc process --parameters -f mongodb-backup-s3-job-template.yaml
 NAME                              DESCRIPTION                                                           GENERATOR           VALUE
-AWS_ACCESS_KEY_ID                 AWS Access Key ID                                                                         
-AWS_SECRET_ACCESS_KEY             AWS Secret Access Key                                                                     
-AWS_S3_BUCKET_NAME                Name of an existing Amazon S3 bucket where backups are to be pushed                       
-MONGODB_HOST                      MongoDB host to target                                                                    
+AWS_ACCESS_KEY_ID                 AWS Access Key ID
+AWS_SECRET_ACCESS_KEY             AWS Secret Access Key
+AWS_S3_BUCKET_NAME                Name of an existing Amazon S3 bucket where backups are to be pushed
+BACKUP_IMAGE                      Backup docker image URL                                                                   docker.io/rhmap/backups
+BACKUP_IMAGE_TAG                  Backup docker image tag                                                                   latest
+MONGODB_HOST                      MongoDB host to target
 MONGODB_PORT                      MongoDB port number                                                                       27017
-MONGODB_USER                      MongoDB user to perform the backup                                                        
-MONGODB_PASSWORD                  MongoDB user password                                                                     
+MONGODB_USER                      MongoDB user to perform the backup
+MONGODB_PASSWORD                  MongoDB user password
 MONGODB_AUTHENTICATION_DATABASE   MongoDB database to authenticate against                                                  admin
-GPG_RECIPIENT                     GPG recpient name to be used to encrypt the database archive                              
-GPG_PUBLIC_KEY                    GPG public key content (base64 encoded)                                                   
+GPG_RECIPIENT                     GPG recpient name to be used to encrypt the database archive
+GPG_PUBLIC_KEY                    GPG public key content (base64 encoded)
 GPG_TRUST_MODEL                   GPG encryption trust model, defaults to "always"                                          always
 ```
 
@@ -87,17 +89,19 @@ The cronjob template requires a number of parameters to be specified. These can 
 ```
 $ oc process --parameters -f mongodb-backup-s3-cronjob-template.yaml
 NAME                              DESCRIPTION                                                           GENERATOR           VALUE
-AWS_ACCESS_KEY_ID                 AWS Access Key ID                                                                         
-AWS_SECRET_ACCESS_KEY             AWS Secret Access Key                                                                     
-AWS_S3_BUCKET_NAME                Name of an existing Amazon S3 bucket where backups are to be pushed                       
+AWS_ACCESS_KEY_ID                 AWS Access Key ID
+AWS_SECRET_ACCESS_KEY             AWS Secret Access Key
+AWS_S3_BUCKET_NAME                Name of an existing Amazon S3 bucket where backups are to be pushed
 CRON_SCHEDULE                     Job schedule in Cron Format [Default is everyday at 2am]                                  0 2 * * *
-MONGODB_HOST                      MongoDB host to target                                                                    
+BACKUP_IMAGE                      Backup docker image URL                                                                   docker.io/rhmap/backups
+BACKUP_IMAGE_TAG                  Backup docker image tag                                                                   latest
+MONGODB_HOST                      MongoDB host to target
 MONGODB_PORT                      MongoDB port number                                                                       27017
-MONGODB_USER                      MongoDB user to perform the backup                                                        
-MONGODB_PASSWORD                  MongoDB user password                                                                     
+MONGODB_USER                      MongoDB user to perform the backup
+MONGODB_PASSWORD                  MongoDB user password
 MONGODB_AUTHENTICATION_DATABASE   MongoDB database to authenticate against                                                  admin
-GPG_RECIPIENT                     GPG recpient name to be used to encrypt the database archive                              
-GPG_PUBLIC_KEY                    GPG public key content (base64 encoded)                                                   
+GPG_RECIPIENT                     GPG recpient name to be used to encrypt the database archive
+GPG_PUBLIC_KEY                    GPG public key content (base64 encoded)
 GPG_TRUST_MODEL                   GPG encryption trust model, defaults to "always"                                          always
 ```
 
