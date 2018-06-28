@@ -14,14 +14,16 @@ The job template requires a number of parameters to be specified. These can be v
 ```
 $ oc process --parameters -f mysql-backup-s3-job-template.yaml
 NAME                    DESCRIPTION                                                           GENERATOR           VALUE
-AWS_ACCESS_KEY_ID       AWS Access Key ID                                                                         
-AWS_SECRET_ACCESS_KEY   AWS Secret Access Key                                                                     
-AWS_S3_BUCKET_NAME      Name of an existing Amazon S3 bucket where backups are to be pushed                       
-MYSQL_HOST              MySQL host to target                                                                      
-MYSQL_USER              MySQL user to perform the backup                                                          
-MYSQL_PASSWORD          MySQL user password                                                                       
-GPG_RECIPIENT           GPG recpient name to be used to encrypt the database archive                              
-GPG_PUBLIC_KEY          GPG public key content (base64 encoded)                                                   
+AWS_ACCESS_KEY_ID       AWS Access Key ID
+AWS_SECRET_ACCESS_KEY   AWS Secret Access Key
+AWS_S3_BUCKET_NAME      Name of an existing Amazon S3 bucket where backups are to be pushed
+BACKUP_IMAGE            Backup docker image URL                                                                   docker.io/rhmap/backups
+BACKUP_IMAGE_TAG        Backup docker image tag                                                                   latest
+MYSQL_HOST              MySQL host to target
+MYSQL_USER              MySQL user to perform the backup
+MYSQL_PASSWORD          MySQL user password
+GPG_RECIPIENT           GPG recpient name to be used to encrypt the database archive
+GPG_PUBLIC_KEY          GPG public key content (base64 encoded)
 GPG_TRUST_MODEL         GPG encryption trust model, defaults to "always"                                          always
 ```
 
@@ -77,15 +79,17 @@ The cronjob template requires a number of parameters to be specified. These can 
 ```
 $ oc process --parameters -f mysql-backup-s3-cronjob-template.yaml
 NAME                    DESCRIPTION                                                           GENERATOR           VALUE
-AWS_ACCESS_KEY_ID       AWS Access Key ID                                                                         
-AWS_SECRET_ACCESS_KEY   AWS Secret Access Key                                                                     
-AWS_S3_BUCKET_NAME      Name of an existing Amazon S3 bucket where backups are to be pushed                       
+AWS_ACCESS_KEY_ID       AWS Access Key ID
+AWS_SECRET_ACCESS_KEY   AWS Secret Access Key
+AWS_S3_BUCKET_NAME      Name of an existing Amazon S3 bucket where backups are to be pushed
 CRON_SCHEDULE           Job schedule in Cron Format [Default is everyday at 2am]                                  0 2 * * *
-MYSQL_HOST              MySQL host to target                                                                      
-MYSQL_USER              MySQL user to perform the backup                                                          
-MYSQL_PASSWORD          MySQL user password                                                                       
-GPG_RECIPIENT           GPG recpient name to be used to encrypt the database archive                              
-GPG_PUBLIC_KEY          GPG public key content (base64 encoded)                                                   
+BACKUP_IMAGE            Backup docker image URL                                                                   docker.io/rhmap/backups
+BACKUP_IMAGE_TAG        Backup docker image tag                                                                   latest
+MYSQL_HOST              MySQL host to target
+MYSQL_USER              MySQL user to perform the backup
+MYSQL_PASSWORD          MySQL user password
+GPG_RECIPIENT           GPG recpient name to be used to encrypt the database archive
+GPG_PUBLIC_KEY          GPG public key content (base64 encoded)
 GPG_TRUST_MODEL         GPG encryption trust model, defaults to "always"                                          always
 ```
 

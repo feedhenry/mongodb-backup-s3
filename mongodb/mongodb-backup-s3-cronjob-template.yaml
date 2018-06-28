@@ -27,7 +27,7 @@ objects:
             spec:
               containers:
                 - name: mongodb-backup-s3-cronjob
-                  image: 'docker.io/rhmap/backups:latest'
+                  image: "${BACKUP_IMAGE}:${BACKUP_IMAGE_TAG}"
                   imagePullPolicy: Always
                   command:
                     - 'bash'
@@ -63,6 +63,12 @@ parameters:
   - name: CRON_SCHEDULE
     description: 'Job schedule in Cron Format [Default is everyday at 2am]'
     value: '0 2 * * *'
+  - name: BACKUP_IMAGE
+    description: 'Backup docker image URL'
+    value: 'docker.io/rhmap/backups'
+  - name: BACKUP_IMAGE_TAG
+    description: 'Backup docker image tag'
+    value: 'latest'
   - name: MONGODB_HOST
     description: 'MongoDB host to target'
     required: true
