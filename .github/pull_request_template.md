@@ -1,17 +1,8 @@
-# Enter a detailed description for your pull request
-
-
-
 # What
 
 
 
 # Why
-
-
-
-
-# How
 
 
 
